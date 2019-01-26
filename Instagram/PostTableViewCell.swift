@@ -50,7 +50,7 @@ class PostTableViewCell: UITableViewCell {
         
         //コメント入力の表示
         if commentsTextField.text! != ""{
-            self.commentsTextField.text = "\(postData.comments)\n"
+            self.commentsTextField.text = "\(postData.comments)"
         }
         
         
