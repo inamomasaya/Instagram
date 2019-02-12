@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostTableViewCell: UITableViewCell {
+class PostTableViewCell: UITableViewCell, UITextFieldDelegate {
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var likeLabel: UILabel!
@@ -16,10 +16,19 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var commentsTextField: UITextField!
     @IBOutlet weak var addcommentButton: UIButton!
+    @IBOutlet weak var commentsLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        self.commentsTextField.delegate = self
+        
+        //クリアボタンは常に設定
+        commentsTextField.clearButtonMode = .always
+    
+        // 改行ボタンを「完了」に変更
+        commentsTextField.returnKeyType = .done
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -49,13 +58,39 @@ class PostTableViewCell: UITableViewCell {
         }
         
         //コメント入力の表示
-        if commentsTextField.text! != ""{
-            self.commentsTextField.text = "\(postData.comments)"
+        
+        
+        var text = ""
+        
+        print(postData.comments)
+        
+        for comment in postData.comments  {
+            text += comment
+            
+            print(comment, text)
+
         }
+        self.commentsLabel.text = text
         
+    }
+    
+    
+    //コメント投稿ボタンのon/off機能追加
+    func textFieldDidEndEditing(_ textField: UITextField) {
         
-        
-        
-        
+        if commentsTextField.text == "" {
+            addcommentButton.isEnabled = false
+        } else {
+            addcommentButton.isEnabled = true
+        }
+    
+        //入力文字の削除
+        commentsTextField.text = ""
+    }
+    
+    func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
+        // キーボードを隠す
+        textfield.resignFirstResponder()
+        return true
     }
 }
