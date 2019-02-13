@@ -58,23 +58,17 @@ class PostTableViewCell: UITableViewCell, UITextFieldDelegate {
         }
         
         //コメント入力の表示
-        
-        
         var text = ""
-        
-        print(postData.comments)
         
         for comment in postData.comments  {
             text += comment
-            
-            print(comment, text)
-
         }
+        
         self.commentsLabel.text = text
         
+        print("text: \(text)")
     }
-    
-    
+
     //コメント投稿ボタンのon/off機能追加
     func textFieldDidEndEditing(_ textField: UITextField) {
         
