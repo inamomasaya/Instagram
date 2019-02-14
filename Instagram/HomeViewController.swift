@@ -166,24 +166,24 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         
         if comment.isEmpty {
-
+            
             print("DEBUG_PRINT: コメントが空文字です。")
             SVProgressHUD.showError(withStatus: "コメント内容を入力して下さい")
             return
             
         }else{
             
-        //Firebaseに保存するデータの準備
-        if let name = Auth.auth().currentUser?.displayName {
-            postData.comments.append("\(name):\(comment)\n")
-            
-            // 増えたcommentsをFirebaseに保存する
-            let postRef = Database.database().reference().child(Const.PostPath).child(postData.id!)
-            let comments = ["comments": postData.comments]
-            postRef.updateChildValues(comments)
-            
-            // HUDで投稿完了を表示する
-            SVProgressHUD.showSuccess(withStatus: "コメントしました")
+            //Firebaseに保存するデータの準備
+            if let name = Auth.auth().currentUser?.displayName {
+                postData.comments.append("\(name):\(comment)\n")
+                
+                // 増えたcommentsをFirebaseに保存する
+                let postRef = Database.database().reference().child(Const.PostPath).child(postData.id!)
+                let comments = ["comments": postData.comments]
+                postRef.updateChildValues(comments)
+                
+                // HUDで投稿完了を表示する
+                SVProgressHUD.showSuccess(withStatus: "コメントしました")
             }
         }
     }
