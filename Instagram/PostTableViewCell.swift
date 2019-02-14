@@ -26,14 +26,14 @@ class PostTableViewCell: UITableViewCell, UITextFieldDelegate {
         
         //クリアボタンは常に設定
         commentsTextField.clearButtonMode = .always
-    
+        
         // 改行ボタンを「完了」に変更
         commentsTextField.returnKeyType = .done
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
@@ -68,18 +68,18 @@ class PostTableViewCell: UITableViewCell, UITextFieldDelegate {
         
         print("text: \(text)")
     }
-
-    //コメント投稿ボタンのon/off機能追加
+    
+    //コメント投稿後の挙動
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        if commentsTextField.text == "" {
-            addcommentButton.isEnabled = false
-        } else {
-            addcommentButton.isEnabled = true
-        }
-    
         //入力文字の削除
         commentsTextField.text = ""
+    }
+    
+    //textfieldタップ後の挙動
+    func textFieldDidBeginEditing(_ textField:UITextField) {
+        
+        addcommentButton.isEnabled = true
     }
     
     func textFieldShouldReturn(_ textfield: UITextField) -> Bool {

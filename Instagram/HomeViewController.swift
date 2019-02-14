@@ -13,7 +13,7 @@ import FirebaseDatabase
 import SVProgressHUD
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
+    
     @IBOutlet weak var tableView: UITableView!
     
     var postArray: [PostData] = []
@@ -23,7 +23,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
         tableView.delegate = self
@@ -51,7 +51,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // キーボードを閉じる
         view.endEditing(true)
     }
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -122,7 +122,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -164,24 +164,28 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // 配列からタップされたインデックスのデータを取り出す
         let postData = postArray[indexPath!.row]
         
+        
+        if comment.isEmpty {
+
+            print("DEBUG_PRINT: コメントが空文字です。")
+            SVProgressHUD.showError(withStatus: "コメント内容を入力して下さい")
+            return
+            
+        }else{
+            
         //Firebaseに保存するデータの準備
         if let name = Auth.auth().currentUser?.displayName {
             postData.comments.append("\(name):\(comment)\n")
-        
-        // 増えたcommentsをFirebaseに保存する
-        let postRef = Database.database().reference().child(Const.PostPath).child(postData.id!)
-        let comments = ["comments": postData.comments]
-        postRef.updateChildValues(comments)
-        
-        // HUDで投稿完了を表示する
-        SVProgressHUD.showSuccess(withStatus: "コメントしました")
             
-            if comment.isEmpty {
-                print("DEBUG_PRINT: コメントが空文字です。")
-                SVProgressHUD.showError(withStatus: "コメント内容を入力して下さい")
-                return
+            // 増えたcommentsをFirebaseに保存する
+            let postRef = Database.database().reference().child(Const.PostPath).child(postData.id!)
+            let comments = ["comments": postData.comments]
+            postRef.updateChildValues(comments)
+            
+            // HUDで投稿完了を表示する
+            SVProgressHUD.showSuccess(withStatus: "コメントしました")
             }
-    }
+        }
     }
     
     // セル内のボタンがタップされた時に呼ばれるメソッド
@@ -222,14 +226,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
